@@ -1,0 +1,22 @@
+services:
+  load-generator:
+    build: .
+    env_file: .env
+    environment:
+      LOADGEN_URL: ${LOADGEN_URL:-http://host.docker.internal:8501/bank}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      LOADGEN_PROVIDER: ${LOADGEN_PROVIDER:-claude}
+      LOADGEN_OLLAMA_URL: ${LOADGEN_OLLAMA_URL:-http://host.docker.internal:11434}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      - --provider
+      - claude
+      - --sessions
+      - "10"
+      - --concurrency
+      - "4"
+      - --messages-min
+      - "4"
+      - --messages-max
+      - "8"
